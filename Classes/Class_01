@@ -1,0 +1,13 @@
+Introduction of Python :
+
+#Variable :
+name = "ali"
+print(name)
+
+#Numpy intro:
+import numpy as np
+arr = np.array([5,10,15,20,25])
+print(arr)
+np.sum(arr)
+np.mean(arr)
+np.max(arr)
