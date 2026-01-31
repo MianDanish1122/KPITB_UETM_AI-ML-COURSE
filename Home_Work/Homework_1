@@ -1,0 +1,49 @@
+"""Why is this a bug?: Adding the gradient moves the weight in the direction of increasing loss (uphill), while subtracting the gradient moves it toward minimum loss (downhill).
+
+weight = weight - (learning_rate * gradient)"""
+
+import matplotlib.pyplot as plt
+
+# Sample data (exercise time → calories)
+data = [(10, 50), (20, 100), (30, 150), (40, 200)]
+
+# Loss function (Mean Squared Error)
+def calculate_loss(weight):
+    loss = 0
+    for x, y in data:
+        y_pred = weight * x
+        loss += (y - y_pred) ** 2
+    return loss / len(data)
+
+# Gradient of loss w.r.t weight
+def calculate_gradient(data, weight):
+    gradient = 0
+    for x, y in data:
+        y_pred = weight * x
+        gradient += -2 * x * (y - y_pred)
+    return gradient / len(data)
+
+# Gradient Descent function
+def train_model(learning_rate):
+    weight = 0.5
+    losses = []
+
+    for i in range(100):
+        gradient = calculate_gradient(data, weight)
+        weight = weight - (learning_rate * gradient)  
+        losses.append(calculate_loss(weight))
+
+    return losses
+
+# Run for two learning rates
+loss_slow = train_model(0.000001)
+loss_fast = train_model(0.001) # Reduced learning rate to prevent OverflowError
+
+# Plot Loss Curves
+plt.plot(loss_slow, label="Learning Rate = 0.000001")
+plt.plot(loss_fast, label="Learning Rate = 0.001")
+plt.xlabel("Iterations")
+plt.ylabel("Loss")
+plt.title("Loss Curve Comparison")
+plt.legend()
+plt.show()
